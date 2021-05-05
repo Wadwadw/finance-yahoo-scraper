@@ -22,6 +22,10 @@ class Extractor_data():
 
 
     def run_extractor(self):
+        try:
+            os.mkdir('result')
+        except FileExistsError:
+            pass
         with open(f'{self.companies}', 'r') as file:
             driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
             for line in file:
@@ -62,13 +66,14 @@ class Extractor_data():
                 name = line.strip('\n')
                 df = pd.read_csv(fr'C:\Games\test\yahoo\yahoo\{name}.csv', header=0)
                 data = df.iloc[::-1]
-                data.to_csv(fr'C:\Games\test\yahoo\yahoo\reversed_files\{name}_reversed.csv', index=False)
+                data.to_csv(fr'C:\Games\test\yahoo\yahoo\{name}_reversed.csv', index=False)
 
 
     def three_days_before_change(self, name_company):
         n = 0
         df = pd.read_csv(fr'C:\Games\test\yahoo\yahoo\{name_company}_reversed.csv', header=0)
         data_set = []
+
         for i in df['Close']:
             try:
                 data = df['Close'][n] / df['Close'][n + 3]
