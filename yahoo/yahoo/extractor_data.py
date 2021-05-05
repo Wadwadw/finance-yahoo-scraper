@@ -37,7 +37,7 @@ class Extractor_data():
                     time.sleep(0.5)
                     download = driver.find_element_by_xpath("((//section[@data-test='qsp-historical']/div/div)[2]/span)[2]/a")
 
-                    f = open(fr'C:/Games/test/yahoo/yahoo/companies/{name_company}.csv', 'wb')
+                    f = open(fr'C:/Games/test/yahoo/yahoo/{name_company}.csv', 'wb')
 
                     url = requests.get(download.get_attribute('href'))
                     f.write(url.content)
@@ -60,14 +60,14 @@ class Extractor_data():
         with open('companies.txt', 'r') as file:
             for line in file:
                 name = line.strip('\n')
-                df = pd.read_csv(fr'C:\Games\test\yahoo\yahoo\companies\{name}.csv', header=0)
+                df = pd.read_csv(fr'C:\Games\test\yahoo\yahoo\{name}.csv', header=0)
                 data = df.iloc[::-1]
-                data.to_csv(fr'C:\Games\test\yahoo\yahoo\reversed_files\{name}.csv', index=False)
+                data.to_csv(fr'C:\Games\test\yahoo\yahoo\reversed_files\{name}_reversed.csv', index=False)
 
 
     def three_days_before_change(self, name_company):
         n = 0
-        df = pd.read_csv(fr'C:\Games\test\yahoo\yahoo\reversed_files\{name_company}.csv', header=0)
+        df = pd.read_csv(fr'C:\Games\test\yahoo\yahoo\{name_company}_reversed.csv', header=0)
         data_set = []
         for i in df['Close']:
             try:
@@ -89,8 +89,8 @@ class Extractor_data():
         with open(self.companies, 'r') as file:
             for line in file:
                 name_company = line.strip('\n')
-                os.remove(fr'C:\Games\test\yahoo\yahoo\companies\{name_company}.csv')
-                os.remove(fr'C:\Games\test\yahoo\yahoo\reversed_files\{name_company}.csv')
+                os.remove(fr'C:\Games\test\yahoo\yahoo\{name_company}.csv')
+                os.remove(fr'C:\Games\test\yahoo\yahoo\{name_company}_reversed.csv')
 
 
 #
