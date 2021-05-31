@@ -1,7 +1,6 @@
 import os
 import time
 import logging
-import sqlite3 as sq
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
@@ -27,7 +26,7 @@ class Extractor_data():
         except FileExistsError:
             pass
         with open(f'{self.companies}', 'r') as file:
-            driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+            driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             for line in file:
                 try:
                     name_company = line.strip('\n')
@@ -36,6 +35,7 @@ class Extractor_data():
                         lambda d: d.find_element_by_xpath("//div[contains(@class, 'dateRangeBtn')]/div"))
                     range_range.click()
                     time.sleep(1)
+
                     max_date = WebDriverWait(driver, 3).until(lambda d: d.find_element_by_xpath("//button[@data-value='MAX']"))
                     max_date.click()
                     time.sleep(0.5)
@@ -98,8 +98,4 @@ class Extractor_data():
                 os.remove(fr'C:\Games\test\yahoo\yahoo\{name_company}_reversed.csv')
 
 
-#
-# run = Extractor_data()
-#
-# extract_data = run.run_extractor()
 
